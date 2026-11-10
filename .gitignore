@@ -1,0 +1,22 @@
+# .NET build output
+**/bin/
+**/obj/
+TestResults/
+*.trx
+
+# Visual Studio and user-specific workspace files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.slnLaunch.user
+
+# Local credentials and environment overrides
+**/secrets.json
+**/appsettings.*.local.json
+
+# Local tooling/cache data
+.codex-nuget-home/
+.DS_Store
+Thumbs.db
