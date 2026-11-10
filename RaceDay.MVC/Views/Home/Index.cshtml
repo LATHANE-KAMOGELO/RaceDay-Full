@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Find your next start";
+    var role = Context.Session.GetString("UserRole");
+    var userName = Context.Session.GetString("UserName");
+}
+
+<section class="hero-section">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Your next great day starts here</p>
+            @if (role == "Participant")
+            {
+                <h1>Good to have you back, <span class="headline-accent">@userName.</span></h1>
+                <p class="hero-description">Your next finish line is waiting. Keep your race details close and get ready for the miles ahead.</p>
+                <div class="hero-actions"><a class="btn btn-primary-action" asp-controller="Participants" asp-action="Profile">Open my race profile <span aria-hidden="true">→</span></a></div>
+            }
+            else if (role == "Organiser")
+            {
+                <h1>Bring your next race <span class="headline-accent">to life.</span></h1>
+                <p class="hero-description">Plan the details, share the start line and give every participant a day worth remembering.</p>
+                <div class="hero-actions"><a class="btn btn-primary-action" asp-controller="Organiser" asp-action="Dashboard">Open organiser dashboard <span aria-hidden="true">→</span></a><a class="text-action" asp-controller="Events" asp-action="Index">Manage events</a></div>
+            }
+            else
+            {
+                <h1>Every great day<br />begins at the <span class="headline-accent">start line.</span></h1>
+                <p class="hero-description">Find your pace, meet your people and make your next race day one to remember.</p>
+                <div class="hero-actions"><a class="btn btn-primary-action" asp-controller="Account" asp-action="Register">Find your starting point <span aria-hidden="true">→</span></a><a class="text-action" asp-controller="Account" asp-action="Login">Already have an account?</a></div>
+            }
+            <div class="hero-proof"><div class="proof-avatars" aria-hidden="true"><span>5K</span><span>10K</span><span>42</span></div><p><strong>Every pace belongs.</strong><br /><span>Come as you are. Leave a little prouder.</span></p></div>
+        </div>
+        <div class="hero-art" aria-label="Illustration of a winding race route through the hills">
+            <div class="art-sun"></div><div class="art-label art-label-top">THE START IS YOURS <span>↗</span></div>
+            <svg class="route-art" viewBox="0 0 620 560" role="img" aria-labelledby="routeTitle routeDesc" xmlns="http://www.w3.org/2000/svg">
+                <title id="routeTitle">A race route through the hills</title><desc id="routeDesc">A winding white road leads from the start to a finish flag in the hills.</desc>
+                <path d="M0 410C99 376 154 424 242 387c80-34 94-104 180-108 82-4 110 51 198 13v268H0Z" fill="#476249" opacity=".38"/>
+                <path d="M0 458c96-34 161-11 244-37s126-98 204-96 111 40 172 3v232H0Z" fill="#253e37" opacity=".62"/>
+                <path d="M44 505c77-4 112-46 164-58 79-18 133 20 189-20 51-37 18-76-14-92-36-18-87-15-102-42-13-23 9-46 43-53 49-9 96 19 132 7 25-8 40-34 34-59-6-27-35-41-70-38" fill="none" stroke="#f8f6ed" stroke-width="26" stroke-linecap="round"/>
+                <path d="M44 505c77-4 112-46 164-58 79-18 133 20 189-20 51-37 18-76-14-92-36-18-87-15-102-42-13-23 9-46 43-53 49-9 96 19 132 7 25-8 40-34 34-59-6-27-35-41-70-38" fill="none" stroke="#d2d0c4" stroke-width="2" stroke-dasharray="8 12" stroke-linecap="round"/>
+                <circle cx="43" cy="505" r="18" fill="#e98255" stroke="#f8f6ed" stroke-width="7"/>
+                <g transform="translate(399 111)"><path d="M0 0v70" stroke="#f8f6ed" stroke-width="5" stroke-linecap="round"/><path d="M3 3h53l-13 14 13 14H3Z" fill="#e98255"/><path d="M0 70h23" stroke="#f8f6ed" stroke-width="5" stroke-linecap="round"/></g>
+                <g fill="#f8f6ed" opacity=".88"><circle cx="104" cy="110" r="2"/><circle cx="142" cy="71" r="3"/><circle cx="227" cy="143" r="2"/><circle cx="501" cy="194" r="2"/><circle cx="545" cy="89" r="3"/></g>
+            </svg>
+            <div class="art-caption"><span class="caption-line"></span><div><strong>One day. Your pace.</strong><br /><span>Make it yours.</span></div></div>
+            <div class="art-stamp"><span>RACE</span><strong>DAY</strong><span>RUN CLUB · EST. EVERY DAY</span></div>
+        </div>
+    </div>
+</section>
+
+<section class="intro-strip">
+    <div class="container intro-inner"><span class="section-kicker">MORE THAN A FINISH TIME</span><p>Big goals, first 5Ks, Sunday-morning jogs. <strong>There’s room for every kind of runner.</strong></p><span class="intro-scribble" aria-hidden="true">✳</span></div>
+</section>
+
+<section class="steps-section">
+    <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">THE RACE DAY FEELING</p><h2>Find your reason<br />to <span class="headline-accent">show up.</span></h2></div><p class="section-description">A little preparation turns race day into a memory you’ll carry long after the finish.</p></div>
+        <div class="steps-grid">
+            <article class="step-card"><span class="step-number">01</span><span class="step-icon icon-route" aria-hidden="true">↝</span><h3>Pick your pace</h3><p>Start where you are. The best distance is the one that gets you out the door.</p></article>
+            <article class="step-card"><span class="step-number">02</span><span class="step-icon icon-shoe" aria-hidden="true">◒</span><h3>Make it a date</h3><p>Bring a friend, meet the crowd, or enjoy a little time with your own thoughts.</p></article>
+            <article class="step-card"><span class="step-number">03</span><span class="step-icon icon-flag" aria-hidden="true">⚑</span><h3>Own your finish</h3><p>Crossing the line is yours to define. Every single one counts.</p></article>
+        </div>
+        @if (role is null)
+        {
+            <div class="bottom-cta"><div><span class="section-kicker">READY WHEN YOU ARE</span><h3>Your next story starts with one step.</h3></div><a class="btn btn-primary-action" asp-controller="Account" asp-action="Register">Create your account <span aria-hidden="true">→</span></a></div>
+        }
+    </div>
+</section>
