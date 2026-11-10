@@ -1,0 +1,54 @@
+﻿@model List<RaceDay.MVC.ViewModels.EventViewModel>
+
+@{
+    ViewData["Title"] = "My Events";
+}
+
+<div class="container mt-5">
+    <h2>My Events</h2>
+    <p>Manage your RaceDay events.</p>
+
+    <a href="/Events/Create" class="btn btn-success mb-3">
+        + Create New Event
+    </a>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info">No events found.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Distance</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.EventName</td>
+                            <td>@item.EventDate.ToString("dd MMM yyyy")</td>
+                            <td>@item.Location</td>
+                            <td>@item.Distance km</td>
+                            <td>@(item.IsPublished ? "Published" : "Draft")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <a href="/Organiser/Dashboard" class="btn btn-secondary">Back</a>
+</div>
