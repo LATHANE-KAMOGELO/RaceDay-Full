@@ -1,0 +1,53 @@
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Express
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?Set MSSQL_SA_PASSWORD in .env}
+    volumes:
+      - raceday-sql-data:/var/opt/mssql
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROJECT: RaceDay.API
+        APP_DLL: RaceDay.API.dll
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      Docker__DisableHttpsRedirection: "true"
+      Database__ApplyMigrationsOnStartup: "true"
+      ConnectionStrings__DefaultConnection: "Server=db,1433;Database=RaceDayDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
+      Jwt__Key: ${RACEDAY_JWT_KEY:?Set RACEDAY_JWT_KEY in .env}
+      Jwt__Issuer: RaceDay
+      Jwt__Audience: RaceDayUsers
+    ports:
+      - "7195:8080"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  mvc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PROJECT: RaceDay.MVC
+        APP_DLL: RaceDay.MVC.dll
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      Docker__DisableHttpsRedirection: "true"
+      ApiSettings__BaseUrl: http://api:8080/
+    ports:
+      - "7135:8080"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  raceday-sql-data:

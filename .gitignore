@@ -13,6 +13,7 @@ TestResults/
 *.slnLaunch.user
 
 # Local credentials and environment overrides
+.env
 **/secrets.json
 **/appsettings.*.local.json
 

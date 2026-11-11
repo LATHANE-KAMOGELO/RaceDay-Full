@@ -93,6 +93,42 @@ builder.Services.AddSwaggerGen(options =>
 // Build application.
 var app = builder.Build();
 
+// Docker Compose can request migrations after its SQL Server service starts.
+// Keep this opt-in so local and production startup do not alter the database
+// unless explicitly configured.
+if (app.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup"))
+{
+    const int maxAttempts = 30;
+    var migrated = false;
+
+    for (var attempt = 1; attempt <= maxAttempts; attempt++)
+    {
+        try
+        {
+            await using var scope = app.Services.CreateAsyncScope();
+            var database = scope.ServiceProvider
+                .GetRequiredService<ApplicationDbContext>();
+            await database.Database.MigrateAsync();
+            migrated = true;
+            break;
+        }
+        catch (Exception) when (attempt < maxAttempts)
+        {
+            app.Logger.LogWarning(
+                "Database is not ready yet (attempt {Attempt}/{MaxAttempts}); retrying in 2 seconds.",
+                attempt,
+                maxAttempts);
+            await Task.Delay(TimeSpan.FromSeconds(2));
+        }
+    }
+
+    if (!migrated)
+    {
+        throw new InvalidOperationException(
+            "The RaceDay database migrations could not be applied.");
+    }
+}
+
 // Configure HTTP pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -100,7 +136,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Configuration.GetValue<bool>("Docker:DisableHttpsRedirection"))
+{
+    app.UseHttpsRedirection();
+}
 
 // Authentication must come before authorization.
 app.UseAuthentication();
