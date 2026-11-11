@@ -1,7 +1,7 @@
 # RaceDay — Event Management
 
 RaceDay is a full-stack race-event management application for runners, walkers, and cycling events. It contains an ASP.NET Core REST API, an ASP.NET Core MVC website, SQL Server persistence, JWT authentication, and automated tests.
-
+ 
 ## Presentation
 
 [Watch the RaceDay presentation on YouTube](https://youtu.be/FoI2yhLz5n8)
